@@ -13,7 +13,6 @@
     tools:context=".MainActivity"
     android:orientation="vertical"
     >
-        <!-- -->
     <include
         layout="@layout/toolbar_layout"/>
     <android.support.design.widget.TabLayout
