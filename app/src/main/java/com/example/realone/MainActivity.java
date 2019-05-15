@@ -1,5 +1,6 @@
 package com.example.realone;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -48,17 +49,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.menu1:
-                Toast.makeText(this, "나는", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.menu2:
-                Toast.makeText(this, "개똥벌레", Toast.LENGTH_SHORT).show();
-                return true;
+                Intent settingIntent = new Intent(this, LoginActivity.class);
+                startActivity(settingIntent);
+                break;
             case R.id.menu3:
-                Toast.makeText(this, "친구가", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.menu4:
-                Toast.makeText(this, "없네", Toast.LENGTH_SHORT).show();
-                return true;
+                Toast.makeText(this, "준비중", Toast.LENGTH_SHORT).show();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

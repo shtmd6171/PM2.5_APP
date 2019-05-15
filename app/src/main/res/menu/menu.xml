@@ -4,23 +4,14 @@
 
     <item
         android:id="@+id/menu1"
-        android:title="1"
-        app:showAsAction="never">
-    </item>
-    <item
-        android:id="@+id/menu2"
-        android:title="2"
+        android:title="회원가입"
         app:showAsAction="never">
     </item>
     <item
         android:id="@+id/menu3"
-        android:title="3"
+        android:title="설정"
         app:showAsAction="never">
     </item>
-    <item
-        android:id="@+id/menu4"
-        android:title="4"
-        app:showAsAction="never">
-    </item>
+
 
 </menu>
