@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.assortment.Search_Activity">
+
+
+    <RelativeLayout
+        android:id="@+id/find_bound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:padding="5dp">
+
+
+        <EditText
+            android:id="@+id/find_box"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@+id/find_btn"
+            android:background="@drawable/stroke_round_back_white"
+            android:hint="검색어를 입력하세요"
+            android:paddingLeft="15dp"
+            android:textColor="#161616"
+            android:textSize="16sp" />
+
+
+        <Button
+            android:id="@+id/find_btn"
+            android:layout_width="60dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/round_back_selector"
+            android:text="검색"
+            android:textColor="#000000"
+            android:textSize="16sp"></Button>
+            <!--android:onClick="mOnClick"-->
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/mid_bar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@+id/find_bound"
+        android:background="#F7F7F7">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="검색 결과"
+            android:textColor="#999999"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/mid_bar"
+        android:background="#ffffff"
+        android:divider="#F7F7F7"
+        android:dividerHeight="0.7dp">
+
+    </ListView>
+
+
+</RelativeLayout>
