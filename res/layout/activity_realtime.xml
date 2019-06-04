@@ -6,20 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="com.example.assortment.RealTime_Activity">
-
+    tools:context="com.example.assortment.RealTime_Activity"
+    android:theme="@style/Theme.AppCompat.NoActionBar">
 
 
     <TextView
-        android:id="@+id/location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15sp"
-        android:text="지역명"
-        android:textColor="#ffffff"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+    android:id="@+id/location"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="15sp"
+    android:textColor="#ffffff"
+    android:textSize="30sp"
+    android:textStyle="bold" />
 
 
     <RelativeLayout
@@ -52,7 +51,8 @@
         android:layout_above="@+id/weather_box"
         android:layout_marginLeft="15dp"
         android:layout_marginBottom="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
 
 
         <LinearLayout
@@ -64,6 +64,7 @@
                 android:id="@+id/dust1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:text="미세먼지 : "
                 android:textColor="#FFFFFF"
                 android:textSize="22sp" />
@@ -105,6 +106,68 @@
 
     </LinearLayout>
 
+    <!--<LinearLayout
+
+
+        android:id="@+id/dust_box2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/weather_box"
+        android:layout_marginLeft="211dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tomo_dust1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="미세먼지 : "
+                android:textColor="#FFFFFF"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/tomo_dust1_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0000"
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tomo_dust2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="초미세먼지 : "
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/tomo_dust2_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0000"
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>-->
+
 
     <LinearLayout
         android:id="@+id/weather_box"
@@ -145,7 +208,18 @@
                 android:layout_margin="15dp"
                 android:text="맑음"
                 android:textColor="#000000"
-                android:textSize="26sp" />
+                android:textSize="20sp"/>
+            <TextView
+                android:id="@+id/c2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/c1"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:text="맑음"
+                android:textColor="#000000"
+                android:textSize="20sp"/>
 
 
         </RelativeLayout>
@@ -171,7 +245,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/c2"
+                android:id="@+id/c3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/t2"
@@ -180,7 +254,18 @@
                 android:layout_margin="15dp"
                 android:text="맑음"
                 android:textColor="#000000"
-                android:textSize="26sp" />
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/c4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/c3"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:text="맑음"
+                android:textColor="#000000"
+                android:textSize="20sp"/>
 
 
         </RelativeLayout>

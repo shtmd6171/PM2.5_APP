@@ -1,25 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MainActivity">
+    android:background="#FFFFFF">
 
     <TextView
         android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="88dp"
+        android:layout_marginTop="15sp"
         android:text="전국미세먼지수치"
         android:textColor="#000000"
         android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textStyle="bold" />
 
 
     <RelativeLayout
@@ -33,12 +32,11 @@
         <ImageView
             android:id="@+id/weather_img"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="622dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="31dp"
+            android:layout_marginTop="0dp"
             android:padding="1dp"
             android:src="@drawable/maps" />
 
     </RelativeLayout>
-
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

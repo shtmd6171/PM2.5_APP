@@ -5,11 +5,13 @@
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.assortment.LoginActivity">
+    tools:context="com.example.assortment.LoginActivity"
+    android:theme="@style/Theme.AppCompat.NoActionBar">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/color2"
         android:orientation="vertical">
 
         <LinearLayout
@@ -75,6 +77,7 @@
                 android:drawableStart="@drawable/ic_lock_black_24dp"
                 android:drawableLeft="@drawable/ic_lock_black_24dp"
                 android:hint=" PASSWARD"
+                android:singleLine="true"
                 android:textColor="#ffffff"
                 android:textColorHint="#ffffff">
                 

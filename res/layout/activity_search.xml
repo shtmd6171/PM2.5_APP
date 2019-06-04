@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.assortment.Search_Activity">
+    tools:context="com.example.assortment.Search_Activity"
+    android:theme="@style/Theme.AppCompat.NoActionBar">
 
 
     <RelativeLayout
@@ -26,7 +26,8 @@
             android:layout_marginRight="15dp"
             android:layout_toLeftOf="@+id/find_btn"
             android:background="@drawable/stroke_round_back_white"
-            android:hint="검색어를 입력하세요"
+            android:hint="도 단위의 행정구역으로 검색하세요"
+            android:singleLine="true"
             android:paddingLeft="15dp"
             android:textColor="#161616"
             android:textSize="16sp" />
@@ -38,14 +39,14 @@
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="15dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/round_back_selector"
             android:text="검색"
             android:textColor="#000000"
             android:textSize="16sp"></Button>
-            <!--android:onClick="mOnClick"-->
+        <!--android:onClick="mOnClick"-->
 
 
     </RelativeLayout>
@@ -59,6 +60,7 @@
         android:background="#F7F7F7">
 
         <TextView
+            android:id="@+id/head_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -69,17 +71,17 @@
 
     </RelativeLayout>
 
-
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/mid_bar"
         android:background="#ffffff"
         android:divider="#F7F7F7"
-        android:dividerHeight="0.7dp">
+        android:dividerHeight="0.7dp"
+        android:visibility="visible">
 
-    </ListView>
+    </android.support.v7.widget.RecyclerView>
 
 
 </RelativeLayout>
