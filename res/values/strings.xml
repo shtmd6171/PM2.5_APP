@@ -14,4 +14,7 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="Warnd">TEXT</string>
+    <string name="notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="notification_channel_name" translatable="false">NOTIFICATION</string>
+
 </resources>
