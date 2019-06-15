@@ -1,11 +1,34 @@
 package com.example.assortment;
 
 
+import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.Toolbar;
 
+import com.android.volley.VolleyError;
+import com.example.assortment.model.MesureDust;
+import com.example.assortment.model.Nearobservatory;
+import com.example.assortment.model.TmLocation;
+import com.example.assortment.volley.DataCallback;
+import com.example.assortment.volley.LocationProvider;
+import com.example.assortment.volley.VolleyResult;
+import com.example.assortment.volley.VolleyService;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -16,117 +39,245 @@ import java.util.ArrayList;
 
 public class RealTime_Activity extends AppCompatActivity {
 
+    private TextView tvLocation;
+    private TextView tvDust10;
+    private TextView tvDust25;
+    private TextView Tomo_tvDust10;
+    private TextView Tomo_tvDust25;
+    private TextView After_Tomo_tvDust10;
+    private TextView After_Tomo_tvDust25;
+    public ProgressDialog mProgressDialog;
+
+    private RelativeLayout mLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_realtime);
 
+        getWindow().setStatusBarColor(Color.rgb(3,169,244));
         StrictMode.enableDefaults();
-
-        TextView status1 = (TextView) findViewById(R.id.dust1_value);
-
+        mLayout = (RelativeLayout) findViewById(R.id.background);
 
 
-        boolean initem = false, indataTime = false, ino3Value = false,inpm10Value = false, inpm25Value = false;
-        boolean ino3Grade = false, inpm10Grade = false, inpm25Grade = false, inpm10Grade1h = false, inpm25Grade1h = false;
-
-        String dataTime = null, o3Value = null, pm10Value = null, pm25Value = null;
-        String o3Grade = null, pm10Grade = null, pm25Grade = null, pm10Grade1h = null, pm25Grade1h = null;
-
-        try {
-            URL url = new URL("http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?stationName=종로구&dataTerm=month&pageNo=1&numOfRows=10&ServiceKey=9HdsYPXrtfkswuTTa%2BWLZXU2C1FgJT1wRMguaTKm3h4g1iUGfTrgvFjCheFxbb6acKR7dzoumtwhD6pyHhxd0Q%3D%3D&ver=1.3"); //검색 URL부분
-
-            XmlPullParserFactory parserCreator = XmlPullParserFactory.newInstance();
-            XmlPullParser parser = parserCreator.newPullParser();
-            InputStream in =url.openStream();
-            parser.setInput(url.openStream(), null);
-
-            int parserEvent = parser.getEventType();
-
-            while (parserEvent != XmlPullParser.END_DOCUMENT) {
-                switch (parserEvent) {
-                    case XmlPullParser.START_TAG:
-
-                        if (parser.getName().equals("dataTime")) { //title 만나면 내용을 받을수 있게 하자
-                            indataTime = true;
-                        }
-                        if (parser.getName().equals("o3Value")) { //address 만나면 내용을 받을수 있게 하자
-                            ino3Value = true;
-                        }
-                        if (parser.getName().equals("pm10Value")) { //address 만나면 내용을 받을수 있게 하자
-                            inpm10Value = true;
-                        }
-                        if (parser.getName().equals("pm25Value")) { //address 만나면 내용을 받을수 있게 하자
-                            inpm25Value = true;
-                        }
-                        if (parser.getName().equals("o3Grade")) { //address 만나면 내용을 받을수 있게 하자
-                            ino3Grade = true;
-                        }
-                        if (parser.getName().equals("pm10Grade")) { //address 만나면 내용을 받을수 있게 하자
-                            inpm10Grade = true;
-                        }
-                        if (parser.getName().equals("pm25Grade")) { //address 만나면 내용을 받을수 있게 하자
-                            inpm25Grade = true;
-                        }
-                        if (parser.getName().equals("pm10Grade1h")) { //address 만나면 내용을 받을수 있게 하자
-                            inpm10Grade1h = true;
-                        }
-                        if (parser.getName().equals("pm25Grade1h")) { //address 만나면 내용을 받을수 있게 하자
-                            inpm25Grade1h = true;
-                        }
-                        break;
-
-                    case XmlPullParser.TEXT:
-
-                        if (indataTime) { //isTitle이 true일 때 태그의 내용을 저장.
-                            dataTime = parser.getText();
-                            indataTime = false;
-                        }
-                        if (ino3Value) { //isTitle이 true일 때 태그의 내용을 저장.
-                            o3Value = parser.getText();
-                            ino3Value = false;
-                        }
-                        if (inpm10Value) { //isTitle이 true일 때 태그의 내용을 저장.
-                            pm10Value = parser.getText();
-                            inpm10Value = false;
-                        }
-                        if (inpm25Value) { //isTitle이 true일 때 태그의 내용을 저장.
-                            pm25Value = parser.getText();
-                            inpm25Value = false;
-                        }
-                        if (ino3Grade) { //isTitle이 true일 때 태그의 내용을 저장.
-                            o3Grade = parser.getText();
-                            ino3Grade = false;
-                        }
-                        if (inpm10Grade) { //isTitle이 true일 때 태그의 내용을 저장.
-                            pm10Grade = parser.getText();
-                            inpm10Grade = false;
-                        }
-                        if (inpm25Grade) { //isTitle이 true일 때 태그의 내용을 저장.
-                            pm25Grade = parser.getText();
-                            inpm25Grade = false;
-                        }
-                        if (inpm10Grade1h) { //isTitle이 true일 때 태그의 내용을 저장.
-                            pm10Grade1h = parser.getText();
-                            inpm10Grade1h = false;
-                        }
-                        if (inpm25Grade1h) { //isTitle이 true일 때 태그의 내용을 저장.
-                            pm25Grade1h = parser.getText();
-                            inpm25Grade1h = false;
-                        }
-                        break;
-
-                    case XmlPullParser.END_TAG:
-                        if (parser.getName().equals("item")) {
+        tvLocation = (TextView) findViewById(R.id.location);
+        tvDust10 = (TextView) findViewById(R.id.dust1_value);
+        tvDust25 = (TextView) findViewById(R.id.dust2_value);
+        Tomo_tvDust10 = (TextView) findViewById(R.id.c1);
+        Tomo_tvDust25 = (TextView) findViewById(R.id.c2);
+        After_Tomo_tvDust10 = (TextView) findViewById(R.id.c3);
+        After_Tomo_tvDust25 = (TextView) findViewById(R.id.c4);
 
 
+        new Handler().postDelayed(() -> {
+            showProgressDialog("위치정보를 요청중입니다. 잠시만 기다려주세요.");
+            new LocationProvider().getLocation(getApplicationContext(), new LocationProvider.LocationResultCallback() {
+                //먼저 내위치정보부터 가져온다.
+                @Override
+                public void gotLocation(Location location1) {
+                    //위치정보 정보를 Callback 받는다.
+                    if (location1 != null) {
+                        hideProgressDialog();
+                        getGeoWTM(location1, obj -> {
+                            //받은 위치정보를 이용해 기상청에서 요구하는 TM 좌표로 변환 을 받아와야한다 위 getGeoWTM() 통해 받아온후 Callback을 받는다.
+                            TmLocation tmLocation = (TmLocation) obj;
+                            if (tmLocation != null) {
+                                getNearobservatory(tmLocation, obj1 -> {
+                                    //받은 위치정보를 이용해 기상청에서 요구하는 TM 좌표로 변환받은후 getNearobservatory() 함수를 통해 TM 인자를 넘겨주고 내 위치에서 가장 가까운 측정소를 받아온다.
+                                    ArrayList<Nearobservatory> list = (ArrayList<Nearobservatory>) obj1;
+                                    if (list != null && list.size() > 0) {
+                                        Nearobservatory nearobservatory = list.get(0);
+                                        tvLocation.setText(nearobservatory.getStationName());
+                                        getMesureDnsty(nearobservatory, obj2 -> {
+                                            //받은 측정소를 getMesureDnsty() 인자에 담아서 보내줘서 측정소에서 측정된 최신 미세먼지값을 받아온다.
+                                            MesureDust mesureDust = (MesureDust) obj2;
+                                            if (mesureDust != null) {
+                                                tvDust10.setText(mesureDust.getPm10Value() + " ㎍/㎥");
+                                                tvDust25.setText(mesureDust.getPm25Value() + " ㎍/㎥" );
+                                                Tomo_tvDust10.setText(mesureDust.getPm10Value24()+" ㎍/㎥");
+                                                Tomo_tvDust25.setText(mesureDust.getPm25Value24()+" ㎍/㎥");
+                                                After_Tomo_tvDust10.setText(mesureDust.getPm10Value24() + 1 +" ㎍/㎥");
+                                                After_Tomo_tvDust25.setText(mesureDust.getPm25Value24() + 1 +" ㎍/㎥");
+                                                if(mesureDust.getPm10Value()<=40) // 파랑
+                                                {
+                                                mLayout.setBackgroundColor(Color.rgb(3,169,244));
+                                                    getWindow().setStatusBarColor(Color.rgb(3,169,244));
+                                                }
+                                                else if(40< mesureDust.getPm10Value() &&  mesureDust.getPm10Value() <=50) // 초록
+                                                {
+                                                    mLayout.setBackgroundColor(Color.rgb(14,206,22));
+                                                    getWindow().setStatusBarColor(Color.rgb(14,206,22));
+                                                }
+                                                else if(50< mesureDust.getPm10Value() &&  mesureDust.getPm10Value() <=70) { //주황
+                                                    mLayout.setBackgroundColor(Color.rgb(241,151,20));
+                                                    getWindow().setStatusBarColor(Color.rgb(241,151,20));
+                                                }
+                                                else if(70< mesureDust.getPm10Value()) { //빨강
+                                                    mLayout.setBackgroundColor(Color.rgb(241,48,32)); // 빨강
+                                                    getWindow().setStatusBarColor(Color.rgb(241,48,32));
+                                                }
 
-                        }
-                        break;
+
+                                            }
+                                        });
+                                    }
+
+                                });
+                            }
+                        });
+                    } else {
+                        showSnakbar("연결상태가 일시적으로 불안정합니다\n다시 시도해주세요", 1500);
+                        hideProgressDialog();
+                    }
                 }
-                parserEvent = parser.next();
+            });
+        }, 250);
+
+
+    }
+
+    private void getMesureDnsty(Nearobservatory nearobservatory, DataCallback callback) {
+        VolleyService volleyService = new VolleyService(new VolleyResult() {
+            @Override
+            public void notifySuccess(String type, JSONObject response) {
+                try {
+                    JSONArray ja = response.getJSONArray("list");
+                    if (ja.length() > 0) {
+
+                        MesureDust item = new MesureDust();
+
+                        for (int i = 0; i < ja.length(); i++) {
+                            JSONObject mesureJson = ja.getJSONObject(i);
+
+                            String pm10Value = mesureJson.getString("pm10Value");
+                            String pm10Value24 = mesureJson.getString("pm10Value24");
+                            String pm25Value = mesureJson.getString("pm25Value");
+                            String pm25Value24 = mesureJson.getString("pm25Value24");
+
+                            item.setPm10Value(Integer.valueOf(pm10Value));
+                            item.setPm10Value24(Integer.valueOf(pm10Value24));
+                            item.setPm25Value(Integer.valueOf(pm25Value));
+                            item.setPm25Value24(Integer.valueOf(pm25Value24));
+                            break;
+                        }
+
+
+                        callback.success(item);
+                    }
+                } catch (JSONException e) {
+
+                }
             }
-        } catch (Exception e) {
+
+            @Override
+            public void notifyError(VolleyError error) {
+
+            }
+        }, getApplicationContext());
+        volleyService.getMesureDnsty(nearobservatory);
+    }
+
+    private void getNearobservatory(TmLocation location, DataCallback callback) {
+        VolleyService volleyService = new VolleyService(new VolleyResult() {
+            @Override
+            public void notifySuccess(String type, JSONObject response) {
+
+                try {
+                    ArrayList<Nearobservatory> list = new ArrayList<>();
+                    JSONArray ja = response.getJSONArray("list");
+                    if (ja.length() > 0) {
+
+                        for (int i = 0; i < ja.length(); i++) {
+                            Nearobservatory item = new Nearobservatory();
+                            JSONObject nearJson = ja.getJSONObject(i);
+
+                            String address = nearJson.getString("addr");
+                            String stationName = nearJson.getString("stationName");
+
+
+                            item.setAddress(address);
+                            item.setStationName(stationName);
+                            list.add(item);
+                        }
+
+                        callback.success(list);
+                    }
+                } catch (JSONException e) {
+
+                }
+            }
+
+            @Override
+            public void notifyError(VolleyError error) {
+
+            }
+        }, getApplicationContext());
+        volleyService.getNearobservatory(location);
+    }
+
+    private void getGeoWTM(Location location, DataCallback callback) {
+        VolleyService volleyService = new VolleyService(new VolleyResult() {
+            @Override
+            public void notifySuccess(String type, JSONObject response) {
+
+                try {
+                    TmLocation tmLocation = new TmLocation();
+                    JSONArray ja = response.getJSONArray("documents");
+                    if (ja.length() > 0) {
+                        for (int i = 0; i < ja.length(); i++) {
+                            JSONObject wtmJson = ja.getJSONObject(i);
+                            if (wtmJson.has("x")) {
+                                String x = wtmJson.getString("x");
+                                tmLocation.setX(Double.valueOf(x));
+                            }
+
+                            if (wtmJson.has("y")) {
+                                String y = wtmJson.getString("y");
+                                tmLocation.setY(Double.valueOf(y));
+                            }
+                        }
+
+                        callback.success(tmLocation);
+                    }
+                } catch (JSONException e) {
+
+                }
+            }
+
+            @Override
+            public void notifyError(VolleyError error) {
+
+            }
+        }, getApplicationContext());
+        volleyService.getGeoWTM(location);
+    }
+
+
+    public void showProgressDialog(String title) {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage(title);
+            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setCanceledOnTouchOutside(false);
+        }
+
+        mProgressDialog.show();
+    }
+
+
+    public void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+    }
+
+    public void showSnakbar(String text, int priod) {
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), text, priod);
+            snackbar.show();
+        } else {
+            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
         }
     }
 

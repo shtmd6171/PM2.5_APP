@@ -81,6 +81,7 @@ android:orientation="vertical">
                 android:drawableStart="@drawable/ic_lock_black_24dp"
                 android:drawableLeft="@drawable/ic_lock_black_24dp"
                 android:hint=" PASSWORD"
+                android:singleLine="true"
                 android:textColor="#ffffff"
                 android:textColorHint="#ffffff">
             </EditText>
@@ -95,6 +96,7 @@ android:orientation="vertical">
                 android:drawableStart="@drawable/ic_mail_outline_black_24dp"
                 android:drawableLeft="@drawable/ic_mail_outline_black_24dp"
                 android:hint=" E-mail"
+                android:singleLine="true"
                 android:textColor="#ffffff"
                 android:textColorHint="#ffffff">
             </EditText>

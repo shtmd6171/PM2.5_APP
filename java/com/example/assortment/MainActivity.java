@@ -1,5 +1,6 @@
 package com.example.assortment;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +16,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.Toast;
+
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -32,6 +41,8 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     @Override
@@ -42,6 +53,8 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+
+
     }
 
     @Override
@@ -72,22 +85,31 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.Prediction) {
-            // Handle the camera action
-        } else if (id == R.id.Real_time) {
-            Intent Intent = new Intent(MainActivity.this, RealTime_Activity.class);
-            startActivity(Intent);
-        } else if (id == R.id.Search) {
-            Intent Intent = new Intent(MainActivity.this, Search_Activity.class);
-            startActivity(Intent);
-        } else if (id == R.id.Select) {
-            Intent Intent = new Intent(MainActivity.this, Select_Activity.class);
-            startActivity(Intent);
-        }
-        else if (id == R.id.User_Inf) {
-            Intent Intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(Intent);
-        }
+        Dexter.withActivity(MainActivity.this).withPermissions(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION).withListener(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                if (report.areAllPermissionsGranted()) {
+                    if (id == R.id.Real_time) {
+                        Intent Intent = new Intent(MainActivity.this, RealTime_Activity.class);
+                        startActivity(Intent);
+                    } else if (id == R.id.Search) {
+                        Intent Intent = new Intent(MainActivity.this, Search_Activity.class);
+                        startActivity(Intent);
+                    } else if (id == R.id.Select) {
+                        Intent Intent = new Intent(MainActivity.this, Select_Activity.class);
+                        startActivity(Intent);
+                    } else if (id == R.id.User_Inf) {
+                        Intent Intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(Intent);
+                    }
+                }
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+
+            }
+        }).check();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
