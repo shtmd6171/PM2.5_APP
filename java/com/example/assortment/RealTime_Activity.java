@@ -1,6 +1,5 @@
 package com.example.assortment;
 
-
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.location.Location;
@@ -10,12 +9,9 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.android.volley.VolleyError;
 import com.example.assortment.model.MesureDust;
@@ -29,13 +25,8 @@ import com.example.assortment.volley.VolleyService;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
-
 
 public class RealTime_Activity extends AppCompatActivity {
 
@@ -49,15 +40,17 @@ public class RealTime_Activity extends AppCompatActivity {
     public ProgressDialog mProgressDialog;
 
     private RelativeLayout mLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_realtime);
 
-        getWindow().setStatusBarColor(Color.rgb(3,169,244));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.rgb(3, 169, 244));
+        }
         StrictMode.enableDefaults();
         mLayout = (RelativeLayout) findViewById(R.id.background);
-
 
         tvLocation = (TextView) findViewById(R.id.location);
         tvDust10 = (TextView) findViewById(R.id.dust1_value);
@@ -67,17 +60,15 @@ public class RealTime_Activity extends AppCompatActivity {
         After_Tomo_tvDust10 = (TextView) findViewById(R.id.c3);
         After_Tomo_tvDust25 = (TextView) findViewById(R.id.c4);
 
-
+        showProgressDialog("위치정보를 요청중입니다. 잠시만 기다려주세요.");
         new Handler().postDelayed(() -> {
-            showProgressDialog("위치정보를 요청중입니다. 잠시만 기다려주세요.");
             new LocationProvider().getLocation(getApplicationContext(), new LocationProvider.LocationResultCallback() {
                 //먼저 내위치정보부터 가져온다.
                 @Override
-                public void gotLocation(Location location1) {
+                public void gotLocation(Location curLocation) {
                     //위치정보 정보를 Callback 받는다.
-                    if (location1 != null) {
-                        hideProgressDialog();
-                        getGeoWTM(location1, obj -> {
+                    if (curLocation != null) {
+                        getGeoWTM(curLocation, obj -> {
                             //받은 위치정보를 이용해 기상청에서 요구하는 TM 좌표로 변환 을 받아와야한다 위 getGeoWTM() 통해 받아온후 Callback을 받는다.
                             TmLocation tmLocation = (TmLocation) obj;
                             if (tmLocation != null) {
@@ -92,38 +83,39 @@ public class RealTime_Activity extends AppCompatActivity {
                                             MesureDust mesureDust = (MesureDust) obj2;
                                             if (mesureDust != null) {
                                                 tvDust10.setText(mesureDust.getPm10Value() + " ㎍/㎥");
-                                                tvDust25.setText(mesureDust.getPm25Value() + " ㎍/㎥" );
-                                                Tomo_tvDust10.setText(mesureDust.getPm10Value24()+" ㎍/㎥");
-                                                Tomo_tvDust25.setText(mesureDust.getPm25Value24()+" ㎍/㎥");
-                                                After_Tomo_tvDust10.setText(mesureDust.getPm10Value24() + 1 +" ㎍/㎥");
-                                                After_Tomo_tvDust25.setText(mesureDust.getPm25Value24() + 1 +" ㎍/㎥");
-                                                if(mesureDust.getPm10Value()<=40) // 파랑
+                                                tvDust25.setText(mesureDust.getPm25Value() + " ㎍/㎥");
+                                                Tomo_tvDust10.setText(mesureDust.getPm10Value24() + " ㎍/㎥");
+                                                Tomo_tvDust25.setText(mesureDust.getPm25Value24() + " ㎍/㎥");
+                                                After_Tomo_tvDust10.setText(mesureDust.getPm10Value24() + 1 + " ㎍/㎥");
+                                                After_Tomo_tvDust25.setText(mesureDust.getPm25Value24() + 1 + " ㎍/㎥");
+
+                                                if(mesureDust.getPm10Value() <=30) // 파랑
                                                 {
-                                                mLayout.setBackgroundColor(Color.rgb(3,169,244));
+                                                    mLayout.setBackgroundColor(Color.rgb(3,169,244));
                                                     getWindow().setStatusBarColor(Color.rgb(3,169,244));
                                                 }
-                                                else if(40< mesureDust.getPm10Value() &&  mesureDust.getPm10Value() <=50) // 초록
+                                                else if(30< mesureDust.getPm10Value() &&  mesureDust.getPm10Value() <=80) // 초록
                                                 {
                                                     mLayout.setBackgroundColor(Color.rgb(14,206,22));
                                                     getWindow().setStatusBarColor(Color.rgb(14,206,22));
+
                                                 }
-                                                else if(50< mesureDust.getPm10Value() &&  mesureDust.getPm10Value() <=70) { //주황
+                                                else if(80< mesureDust.getPm10Value() &&  mesureDust.getPm10Value() <=150) { //주황
                                                     mLayout.setBackgroundColor(Color.rgb(241,151,20));
                                                     getWindow().setStatusBarColor(Color.rgb(241,151,20));
                                                 }
-                                                else if(70< mesureDust.getPm10Value()) { //빨강
+                                                else if(151<= mesureDust.getPm10Value()) { //빨강
                                                     mLayout.setBackgroundColor(Color.rgb(241,48,32)); // 빨강
                                                     getWindow().setStatusBarColor(Color.rgb(241,48,32));
                                                 }
-
-
                                             }
                                         });
                                     }
-
                                 });
                             }
                         });
+
+                        hideProgressDialog();
                     } else {
                         showSnakbar("연결상태가 일시적으로 불안정합니다\n다시 시도해주세요", 1500);
                         hideProgressDialog();
@@ -131,8 +123,6 @@ public class RealTime_Activity extends AppCompatActivity {
                 }
             });
         }, 250);
-
-
     }
 
     private void getMesureDnsty(Nearobservatory nearobservatory, DataCallback callback) {
@@ -192,7 +182,6 @@ public class RealTime_Activity extends AppCompatActivity {
 
                             String address = nearJson.getString("addr");
                             String stationName = nearJson.getString("stationName");
-
 
                             item.setAddress(address);
                             item.setStationName(stationName);

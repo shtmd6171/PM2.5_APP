@@ -91,7 +91,7 @@ public class Search_Activity extends AppCompatActivity {
                             JSONObject searhJson = ja.getJSONObject(i);
                             SearchMesureDust searchMesureDust = new SearchMesureDust();
                             searchMesureDust.setCityName(searhJson.getString("cityName"));
-                            searchMesureDust.setPm10Value(searhJson.getString("pm10Value"));
+                            searchMesureDust.setPm10Value(searhJson.getString("pm10Value" + " ㎍/㎥"));
                             searchMesureDust.setPm25Value(searhJson.getString("pm25Value"));
                             list.add(searchMesureDust);
 
