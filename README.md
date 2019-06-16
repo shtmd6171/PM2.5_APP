@@ -251,7 +251,7 @@
 </pre>
 * png 이미지 위에서 출력 값이 작동하고 출력되는 정보는 시도의 미세먼지, 초미세먼지 정보이다.
 
-## 4.사용자 관심 정보 등록 방식
+## 4. 사용자 관심 정보 등록 방식
 * sqlite(dbhelper)를 사용하여 각 도시별 정보를 저장(등록)
 * sqlite의 핵심코드는 DbHelper.class전체
 package com.example.assortment.model;
