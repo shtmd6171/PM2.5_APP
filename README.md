@@ -394,3 +394,4 @@ public class DbHelper extends SQLiteOpenHelper {
         });
     }
 </pre>
+* 사용자는 검색을 통한 관심 도시를 선택하여 버튼을 누름으로써 즐겨찾기 항목에 추가된 것을 확인 할 수 있다
