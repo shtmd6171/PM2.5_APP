@@ -1,4 +1,4 @@
-소프트웨어 명세서
+﻿소프트웨어 명세서
 ======================
 
 ## 1. 실시간 정보 제공 방식
@@ -250,3 +250,152 @@
         }
 </pre>
 * png 이미지 위에서 출력 값이 작동하고 출력되는 정보는 시도의 미세먼지, 초미세먼지 정보이다.
+
+## 4.사용자 관심 정보 등록 방식
+* sqlite(dbhelper)를 사용하여 각 도시별 정보를 저장(등록)
+* sqlite의 핵심코드는 DbHelper.class전체
+package com.example.assortment.model;
+
+
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.util.ArrayList;
+
+public class DbHelper extends SQLiteOpenHelper {
+
+    public DbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory,
+                    int version) {
+        super(context, name, factory, version);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL( "CREATE TABLE MISE_TBL (_id INTEGER PRIMARY KEY AUTOINCREMENT, item TEXT,root TEXT);");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
+
+    public void insert(String item,String root) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL( "INSERT INTO MISE_TBL VALUES(null, " +
+                "'" + item + "','"+root+"');");
+        db.close();
+    }
+
+
+
+    public void delete(String item) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM MISE_TBL WHERE item='" + item + "';");
+        db.close();
+    }
+    public void delete(int idx) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM MISE_TBL WHERE _id =" + idx + ";");
+        db.close();
+    }
+    public ArrayList<MiseModel> getResult() {
+        SQLiteDatabase db = getReadableDatabase();
+        String result = "";
+
+        Cursor cursor = db.rawQuery("SELECT * FROM MISE_TBL", null);
+        ArrayList<MiseModel> mise = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            MiseModel miseModel = new MiseModel(cursor.getInt(0),cursor.getString(1),cursor.getString(2));
+            mise.add(miseModel);
+            Log.d("<TAG>>",miseModel.item +  " ,  " + miseModel.getRoot());
+        }
+
+        return mise;
+    }
+
+    public class MiseModel{
+        int idx;
+        String item;
+        String root;
+
+        public MiseModel(int idx, String item, String root) {
+            this.idx = idx;
+            this.item = item;
+            this.root = root;
+        }
+
+        public String getRoot() {
+            return root;
+        }
+
+        public void setRoot(String root) {
+            this.root = root;
+        }
+
+        public MiseModel(int idx, String item) {
+            this.idx = idx;
+            this.item = item;
+        }
+
+        public int getIdx() {
+            return idx;
+        }
+
+        public void setIdx(int idx) {
+            this.idx = idx;
+        }
+
+        public String getItem() {
+            return item;
+        }
+
+        public void setItem(String item) {
+            this.item = item;
+        }
+    }
+}
+
+
+* 혹은 Search_Activity.xml에 onCreate 메소드이다
+ @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_three_page);
+        getWindow().setStatusBarColor(Color.rgb(3,169,244));
+
+        edit = (EditText) findViewById(R.id.find_box);
+        //text = (TextView) findViewById(R.id.list);
+        btnSearch = (Button) findViewById(R.id.find_btn);
+        //리스트뷰를 셋팅한다.
+        recyclerView = (RecyclerView) findViewById(R.id.list);
+
+
+        //리스트뷰에 커스텀으로 구현한 adapter를 연결해준다.
+        adapter = new Search_Adapter(getApplicationContext());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+
+        btnSearch.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(edit.getText().toString()) || edit.getText().toString().equalsIgnoreCase("")) {
+                return;
+            }
+
+            getSearchMesureDnsty(edit.getText().toString(), obj -> {
+                ArrayList<SearchMesureDust> list = (ArrayList<SearchMesureDust>) obj;
+                Log.d("<TAG>>>",list.size() + " SIZE");
+                if (list.size() > 0) {
+                    adapter.addAll(list);
+                }
+
+            });
+
+
+//            tvSearchResult.setText(dust.equalsIgnoreCase("") ? "결과없음" : dust);
+
+
+        });
+    }
