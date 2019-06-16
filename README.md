@@ -257,14 +257,8 @@
 package com.example.assortment.model;
 
 
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-import java.util.ArrayList;
-
+<pre>
 public class DbHelper extends SQLiteOpenHelper {
 
     public DbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory,
@@ -399,3 +393,4 @@ public class DbHelper extends SQLiteOpenHelper {
 
         });
     }
+</pre>
