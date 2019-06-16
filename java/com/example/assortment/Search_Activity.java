@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,13 +37,13 @@ public class Search_Activity extends AppCompatActivity {
 
     Button btnSearch;
     RecyclerView recyclerView;
-    SearchAdapter adapter;
+    Search_Adapter adapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.fragment_three_page);
         getWindow().setStatusBarColor(Color.rgb(3,169,244));
 
         edit = (EditText) findViewById(R.id.find_box);
@@ -53,7 +54,7 @@ public class Search_Activity extends AppCompatActivity {
 
 
         //리스트뷰에 커스텀으로 구현한 adapter를 연결해준다.
-        adapter = new SearchAdapter(getApplicationContext());
+        adapter = new Search_Adapter(getApplicationContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
@@ -65,6 +66,7 @@ public class Search_Activity extends AppCompatActivity {
 
             getSearchMesureDnsty(edit.getText().toString(), obj -> {
                 ArrayList<SearchMesureDust> list = (ArrayList<SearchMesureDust>) obj;
+                Log.d("<TAG>>>",list.size() + " SIZE");
                 if (list.size() > 0) {
                     adapter.addAll(list);
                 }
@@ -84,6 +86,7 @@ public class Search_Activity extends AppCompatActivity {
             public void notifySuccess(String type, JSONObject response) {
 
                 try {
+                    Log.d("<TAG>>>",response.toString());
                     JSONArray ja = response.getJSONArray("list");
                     ArrayList<SearchMesureDust> list = new ArrayList<>();
                     if (ja.length() > 0) {
@@ -91,14 +94,16 @@ public class Search_Activity extends AppCompatActivity {
                             JSONObject searhJson = ja.getJSONObject(i);
                             SearchMesureDust searchMesureDust = new SearchMesureDust();
                             searchMesureDust.setCityName(searhJson.getString("cityName"));
-                            searchMesureDust.setPm10Value(searhJson.getString("pm10Value" + " ㎍/㎥"));
+                            searchMesureDust.setPm10Value(searhJson.getString("pm10Value"));//+ " ㎍/㎥"
                             searchMesureDust.setPm25Value(searhJson.getString("pm25Value"));
+                            searchMesureDust.setRootcity(title);
                             list.add(searchMesureDust);
 
                         }
                         callback.success(list);
                     }
                 } catch (JSONException e) {
+                    Log.e("<TAG>>>",e.toString());
 
                 }
             }

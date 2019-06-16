@@ -4,6 +4,34 @@ public class SearchMesureDust {
     private String cityName;
     private String pm10Value;
     private String pm25Value;
+    private String rootcity;
+
+    private int idx;
+    private boolean favor;
+
+    public int getIdx() {
+        return idx;
+    }
+
+    public void setIdx(int idx) {
+        this.idx = idx;
+    }
+
+    public String getRootcity() {
+        return rootcity;
+    }
+
+    public void setRootcity(String rootcity) {
+        this.rootcity = rootcity;
+    }
+
+    public boolean isFavor() {
+        return favor;
+    }
+
+    public void setFavor(boolean favor) {
+        this.favor = favor;
+    }
 
     public String getCityName() {
         return cityName;
